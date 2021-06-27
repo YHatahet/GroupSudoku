@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/YHatahet/GroupSudoku#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "socket.io": "^4.1.2",
     "sudoku": "0.0.3"
   }
