@@ -3,18 +3,9 @@
 const SudokuTools = require("sudoku");
 
 class Sudoku {
-  /**
-   * Preliminary API:
-   *
-   * - createSudoku(difficulty)
-   * - newGame()
-   * - restart() // same game but clean
-   * - check (number<1to9>, x, y) -> Boolean
-   *
-   */
-
   constructor() {
-    this.sudokuBoard;
+    this.sudokuBoardStart;
+    this.sudokuBoardCurrent;
     this.sudokuBoardSolution;
   }
 
@@ -22,8 +13,16 @@ class Sudoku {
    *
    * Generates a new sudoku board
    */
-  _generateSudoku() {
+  _generateSudokuBoard() {
     return SudokuTools.solvepuzzle(SudokuTools.makepuzzle());
+  }
+
+  /**
+   * Create new game
+   * @param {*} difficulty number of blocks to hide
+   */
+  newGame(difficulty) {
+    this.createSudoku(difficulty);
   }
 
   /**
@@ -31,9 +30,17 @@ class Sudoku {
    * @param {Number} difficulty
    */
   createSudoku(difficulty) {
-    this.sudokuBoardSolution = this._generateSudoku();
-    this.sudokuBoard = [...this.sudokuBoardSolution];
-    this._hideBlocksRandomly(difficulty);
+    this.sudokuBoardSolution = this._generateSudokuBoard();
+    this.sudokuBoardCurrent = [...this.sudokuBoardSolution];
+    this._hideBlocksRandomly(this.sudokuBoardCurrent, difficulty);
+    this.sudokuBoardStart = [...this.sudokuBoardCurrent];
+  }
+
+  /**
+   * Restarts the exact same board
+   */
+  restart() {
+    this.sudokuBoardCurrent = [...this.sudokuBoardStart];
   }
 
   /**
@@ -51,17 +58,24 @@ class Sudoku {
     for (; i < numElements; i++) {
       let j = Math.floor(Math.random() * 100000000) % (i + 1);
 
-      // If the randomly picked index is smaller than k, then replace the element present at the index with new element from stream
+      // If the randomly picked index is smaller than k, then replace
+      // the element present at the index with new element from stream
       if (j < k) reservoir[j] = stream[i];
     }
     return reservoir;
   }
 
-  _hideBlocksRandomly(blocksAmount) {
+  /**
+   *
+   * @param {*} board
+   * @param {*} blocksAmount
+   */
+  _hideBlocksRandomly(board, blocksAmount) {
     const numsToBlock = this._reservoirSampling(81 - blocksAmount);
     for (const index of numsToBlock) {
-      this.sudokuBoard[index] = null;
+      board[index] = null;
     }
+    return board;
   }
 
   /**
