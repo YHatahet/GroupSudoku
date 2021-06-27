@@ -4,9 +4,17 @@ const SudokuTools = require("sudoku");
 
 class Sudoku {
   constructor() {
-    this.sudokuBoardStart;
-    this.sudokuBoardCurrent;
-    this.sudokuBoardSolution;
+    this._sudokuBoardStart;
+    this._sudokuBoardCurrent;
+    this._sudokuBoardSolution;
+  }
+
+  /**
+   *
+   * @returns Current sudoku board
+   */
+  getBoard() {
+    return this._sudokuBoardCurrent;
   }
 
   /**
@@ -26,25 +34,25 @@ class Sudoku {
   }
 
   /**
-   *
+   * Creates a sudoku game
    * @param {Number} difficulty
    */
   createSudoku(difficulty) {
-    this.sudokuBoardSolution = this._generateSudokuBoard();
-    this.sudokuBoardCurrent = [...this.sudokuBoardSolution];
-    this._hideBlocksRandomly(this.sudokuBoardCurrent, difficulty);
-    this.sudokuBoardStart = [...this.sudokuBoardCurrent];
+    this._sudokuBoardSolution = this._generateSudokuBoard();
+    this._sudokuBoardCurrent = [...this._sudokuBoardSolution];
+    this._hideBlocksRandomly(this._sudokuBoardCurrent, difficulty);
+    this._sudokuBoardStart = [...this._sudokuBoardCurrent];
   }
 
   /**
-   * Restarts the exact same board
+   * Restarts the exact same board as the one we started with
    */
   restart() {
-    this.sudokuBoardCurrent = [...this.sudokuBoardStart];
+    this._sudokuBoardCurrent = [...this._sudokuBoardStart];
   }
 
   /**
-   *
+   * Reservoir sampling function; returns k elements between 0 and 80
    * @param {*} k
    * @returns {Array}
    */
@@ -66,7 +74,7 @@ class Sudoku {
   }
 
   /**
-   *
+   * hides random blocks by utilizing reservoir sampling
    * @param {*} board
    * @param {*} blocksAmount
    */
@@ -79,6 +87,16 @@ class Sudoku {
   }
 
   /**
+   * Gets index for sudoku boards
+   * @param {Number} x row index <0 - 8>
+   * @param {Number} y column index <0 - 8>
+   * @returns
+   */
+  _getIndex(x, y) {
+    return x + y * 9;
+  }
+
+  /**
    * Checks if the value at the given position is correct
    * @param {Number} value Number (<1 to 9>)
    * @param {Number} x row position (<1 to 9>)
@@ -86,8 +104,7 @@ class Sudoku {
    * @returns {Boolean} True or False
    */
   check(value, x, y) {
-    const index = x + y * 9;
-    return value === this.sudokuBoardSolution[index];
+    return value === this._sudokuBoardSolution[_getIndex(x, y)];
   }
 }
 
