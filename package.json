@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/YHatahet/GroupSudoku/issues"
   },
-  "homepage": "https://github.com/YHatahet/GroupSudoku#readme"
+  "homepage": "https://github.com/YHatahet/GroupSudoku#readme",
+  "dependencies": {
+    "sudoku": "0.0.3"
+  }
 }
