@@ -26,7 +26,7 @@ const port = 4141;
 
 io.on("connection", function (socket) {
     console.log("A user connected", socket.id);
-    console.log(sudoku_sol);
+    console.log(currentboard);
     //Send a message after a timeout of 4seconds
     setTimeout(function () {
         socket.send("Sent a message 4seconds after connection!");
@@ -37,7 +37,23 @@ io.on("connection", function (socket) {
     socket.on("disconnect", function () {
         console.log("A user disconnected");
     });
+
+    setInterval(function () {
+        socket.emit("getboard", currentboard);
+    }, 1000);
     socket.emit("getboard", currentboard);
+
+    setInterval(function () {
+        for (let j; j <= 81; j++) {
+            if (currentboard[j] != sudoku_sol[j]) {
+                mistakescount++;
+                socket.emit("mistake", j, mistakescount);
+            } else {
+                socket.emit("correct", j);
+            }
+        }
+        socket.emit("getboard", currentboard);
+    }, 3000);
 
     socket.on("updatesudoku", (randomval, key) => {
         console.log(randomval, key);
