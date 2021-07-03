@@ -18,6 +18,7 @@ let sudoku_sol = sudoku.solutionBoard();
 let board = sudoku.getBoard();
 let startboard = sudoku.startBoard();
 let currentboard = startboard;
+let user;
 // Use the following folders
 app.use("/", game);
 // app.use("/game", game);
@@ -26,7 +27,8 @@ const port = 4141;
 
 io.on("connection", function (socket) {
     console.log("A user connected", socket.id);
-    console.log(currentboard);
+
+    // console.log(currentboard);
     //Send a message after a timeout of 4seconds
     setTimeout(function () {
         socket.send("Sent a message 4seconds after connection!");
@@ -39,21 +41,18 @@ io.on("connection", function (socket) {
     });
 
     setInterval(function () {
-        socket.emit("getboard", currentboard);
-    }, 1000);
-    socket.emit("getboard", currentboard);
-
-    setInterval(function () {
-        for (let j; j <= 81; j++) {
-            if (currentboard[j] != sudoku_sol[j]) {
+        for (let j = 0; j <= 81; j++) {
+            // console.log("test");
+            if (currentboard[j] != sudoku_sol[j] && currentboard[j] != null) {
                 mistakescount++;
                 socket.emit("mistake", j, mistakescount);
             } else {
                 socket.emit("correct", j);
             }
         }
+        // socket.emit("updategetboard", currentboard);
         socket.emit("getboard", currentboard);
-    }, 3000);
+    }, 500);
 
     socket.on("updatesudoku", (randomval, key) => {
         console.log(randomval, key);

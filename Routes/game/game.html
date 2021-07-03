@@ -332,144 +332,154 @@
         };
         socket.on("getboard", (board) => {
             console.log(board);
-            // board[55] = username.value;
             $.each(board, function (key, val) {
-                // if (i < 9) {
-                if (val == null) {
-                    val = "-";
-                }
+                if (i <= 8) {
+                    if (val == null) {
+                        val = "-";
+                    }
 
-                if (key % 9 == 0 && key != 0) {
-                    i++;
-                }
+                    if (i < 9 && key % 9 == 0 && key != 0) {
+                        i++;
+                        console.log(i);
+                    }
 
-                if (
-                    horizontalBorder.indexOf(key) == -1 &&
-                    verticalBorder.indexOf(key) == -1
-                ) {
-                    $(
-                        '<div class="dropdown"><button class="dropbtn"><p id="updatecell' +
-                            key +
-                            '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
-                            key +
-                            ')">-</a><a onclick="updatecell1(' +
-                            key +
-                            ')">1</a><a onclick="updatecell2(' +
-                            key +
-                            ')">2</a><a onclick="updatecell3(' +
-                            key +
-                            ')">3</a><a onclick="updatecell4(' +
-                            key +
-                            ')">4</a><a onclick="updatecell5(' +
-                            key +
-                            ')">5</a><a onclick="updatecell6(' +
-                            key +
-                            ')">6</a><a onclick="updatecell7(' +
-                            key +
-                            ')">7</a><a onclick="updatecell8(' +
-                            key +
-                            ')">8</a><a onclick="updatecell9(' +
-                            key +
-                            ')">9</a></div>'
-                    ).appendTo("#names" + i);
-                } else if (
-                    verticalBorder.indexOf(key) != -1 &&
-                    horizontalBorder.indexOf(key) == -1
-                ) {
-                    $(
-                        '<div class="dropdownvertical"><button class="dropbtn"><p id="updatecell' +
-                            key +
-                            '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
-                            key +
-                            ')">-</a><a onclick="updatecell1(' +
-                            key +
-                            ')">1</a><a onclick="updatecell2(' +
-                            key +
-                            ')">2</a><a onclick="updatecell3(' +
-                            key +
-                            ')">3</a><a onclick="updatecell4(' +
-                            key +
-                            ')">4</a><a onclick="updatecell5(' +
-                            key +
-                            ')">5</a><a onclick="updatecell6(' +
-                            key +
-                            ')">6</a><a onclick="updatecell7(' +
-                            key +
-                            ')">7</a><a onclick="updatecell8(' +
-                            key +
-                            ')">8</a><a onclick="updatecell9(' +
-                            key +
-                            ')">9</a></div>'
-                    ).appendTo("#names" + i);
-                } else if (
-                    verticalBorder.indexOf(key) != -1 &&
-                    horizontalBorder.indexOf(key) != -1
-                ) {
-                    $(
-                        '<div class="dropdownboth"><button class="dropbtn"><p id="updatecell' +
-                            key +
-                            '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
-                            key +
-                            ')">-</a><a onclick="updatecell1(' +
-                            key +
-                            ')">1</a><a onclick="updatecell2(' +
-                            key +
-                            ')">2</a><a onclick="updatecell3(' +
-                            key +
-                            ')">3</a><a onclick="updatecell4(' +
-                            key +
-                            ')">4</a><a onclick="updatecell5(' +
-                            key +
-                            ')">5</a><a onclick="updatecell6(' +
-                            key +
-                            ')">6</a><a onclick="updatecell7(' +
-                            key +
-                            ')">7</a><a onclick="updatecell8(' +
-                            key +
-                            ')">8</a><a onclick="updatecell9(' +
-                            key +
-                            ')">9</a></div>'
-                    ).appendTo("#names" + i);
-                } else {
-                    $(
-                        '<div class="dropdownhorizontal"><button class="dropbtn"><p id="updatecell' +
-                            key +
-                            '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
-                            key +
-                            ')">-</a><a onclick="updatecell1(' +
-                            key +
-                            ')">1</a><a onclick="updatecell2(' +
-                            key +
-                            ')">2</a><a onclick="updatecell3(' +
-                            key +
-                            ')">3</a><a onclick="updatecell4(' +
-                            key +
-                            ')">4</a><a onclick="updatecell5(' +
-                            key +
-                            ')">5</a><a onclick="updatecell6(' +
-                            key +
-                            ')">6</a><a onclick="updatecell7(' +
-                            key +
-                            ')">7</a><a onclick="updatecell8(' +
-                            key +
-                            ')">8</a><a onclick="updatecell9(' +
-                            key +
-                            ')">9</a></div>'
-                    ).appendTo("#names" + i);
+                    if (
+                        horizontalBorder.indexOf(key) == -1 &&
+                        verticalBorder.indexOf(key) == -1
+                    ) {
+                        $(
+                            '<div class="dropdown"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else if (
+                        verticalBorder.indexOf(key) != -1 &&
+                        horizontalBorder.indexOf(key) == -1
+                    ) {
+                        $(
+                            '<div class="dropdownvertical"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else if (
+                        verticalBorder.indexOf(key) != -1 &&
+                        horizontalBorder.indexOf(key) != -1
+                    ) {
+                        $(
+                            '<div class="dropdownboth"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else {
+                        $(
+                            '<div class="dropdownhorizontal"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    }
                 }
-                // }
 
                 document.getElementById("updatecell" + key).innerHTML = val;
                 socket.emit("updateBoard", board);
             });
         });
+
+        // socket.on("updategetboard", (boardupdate) => {
+        //     document.getElementById("updatecell" + key).innerHTML = val;
+        //     socket.emit("updateBoard", board);
+        // });
+
+        socket.on("updatesudokuvalues", () => {
+            document.getElementById("updatecell" + key).innerHTML = val;
+            socket.emit("updateBoard", board);
+        });
         socket.on("mistake", (key, mistakescount) => {
             count++;
             document.getElementById("updatecell" + key).style.color = "red";
-            document.getElementById("mistakes").innerHTML = mistakescount;
+            // document.getElementById("mistakes").innerHTML = mistakescount;
         });
         socket.on("correct", (key) => {
-            document.getElementById("updatecell" + key).style.color = "white";
+            document.getElementById("updatecell" + key).style.color = "black";
         });
 
         function updatecell(key, val) {
