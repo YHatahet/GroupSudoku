@@ -44,28 +44,10 @@ class Sudoku {
      */
     createSudoku(difficulty) {
         this._sudokuBoardSolution = this._generateSudokuBoard();
+        for (let i = 0; i < 81; i++) this._sudokuBoardSolution[i]++;
         this._sudokuBoardCurrent = [...this._sudokuBoardSolution];
         this._hideBlocksRandomly(this._sudokuBoardCurrent, difficulty);
         this._sudokuBoardStart = [...this._sudokuBoardCurrent];
-        for (let i; i < 81; i++) {
-            if (this._sudokuBoardStart[i] != null) {
-                this._sudokuBoardStart[i] = this._sudokuBoardStart[i].map(
-                    function (entry) {
-                        return entry + 1;
-                    }
-                );
-            }
-        }
-        this._sudokuBoardSolution = this._sudokuBoardSolution.map(function (
-            entry
-        ) {
-            return entry + 1;
-        });
-        this._sudokuBoardCurrent = this._sudokuBoardCurrent.map(function (
-            entry
-        ) {
-            return entry + 1;
-        });
     }
 
     /**
