@@ -1,0 +1,61 @@
+<!-- <!DOCTYPE html> -->
+<html>
+    <head>
+        <title>Group Sudoku! Wasseem Clown</title>
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+<div>
+    <h1>Group Sudoku Login</h1>
+    <table border="0">
+        <tr>
+            <form id="input">
+                <td>Username:</td>
+                <td align="left">
+                    <input
+                        id="username-input"
+                        type="text"
+                        size="25"
+                        name="uname"
+                    />
+                    <tr>
+                        <td>Room ID</td>
+                        <td align="left">
+                            <input
+                                id="roomid-input"
+                                type="text"
+                                size="25"
+                                name="rid"
+                            />
+                        </td>
+                    </tr>
+                </td>
+
+                <td>
+                    <tr>
+                        <input type="submit" value="Join As Host" />
+                        <input type="submit" value="Join As User" />
+                    </tr>
+                </td>
+            </form>
+
+            <script>
+                console.log("HERE");
+                var socket = io();
+                var username = document.getElementById("username-input");
+                var input = document.getElementById("input");
+                var roomid = document.getElementById("roomid-input");
+
+                input.onsubmit = function (e) {
+                    socket.emit("testing", username.value, roomid.value);
+                    e.preventDefault();
+                };
+                // socket.on('c')
+                // socket.on("connection", function (data) {
+                //     document.write(data.description);
+
+                // });
+            </script>
+        </tr>
+    </table>
+</div>
+</html>

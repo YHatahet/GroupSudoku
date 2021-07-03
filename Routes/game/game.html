@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style type="text/css">
+    .sudoku_table {
+        border: 2px solid black;
+        border-collapse: collapse;
+        border-spacing: 0;
+        height: 500px;
+        width: 729px;
+        padding: 15px;
+    }
+    .sudoku_table td {
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+    }
+    .sudoku_table th {
+        border-color: black;
+        border-style: solid;
+        border-width: 1px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        font-weight: normal;
+        overflow: hidden;
+        padding: 10px 5px;
+        word-break: normal;
+    }
+    .sudoku_table .sudoku_cell {
+        border-color: #330001;
+        color: #c0c0c0;
+        text-align: left;
+        vertical-align: top;
+    }
+    .sudoku_row {
+        /* background-color: blue;
+        border: 2px solid black;
+        width: 500px;
+        height: 50px;
+        vertical-align: center;
+        text-align: center;
+        border: 2px solid black;
+        padding: 5px; */
+    }
+    .sudoku_cell {
+        border: 2px solid black;
+        width: 500px;
+        height: 50px;
+        vertical-align: bottom;
+        text-align: center;
+    }
+    td a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        /* background-color: blue; */
+    }
+    .dropbtn {
+        background-color: #038db8;
+        color: white;
+        /* padding: 13px; */
+        padding: 0px;
+        font-size: 16px;
+        border: 3px solid white;
+        height: 51px;
+        width: 51px;
+    }
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+    .dropdownvertical {
+        position: relative;
+        display: inline-block;
+        border-right: 2px solid black;
+    }
+    .dropdownhorizontal {
+        position: relative;
+        display: inline-block;
+        border-bottom: 2px solid black;
+    }
+    .dropdownboth {
+        position: relative;
+        display: inline-block;
+        border-bottom: 2px solid black;
+        border-right: 2px solid black;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content a {
+        color: black;
+        padding: 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    .dropdownvertical-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdownvertical-content a {
+        color: black;
+        padding: 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdownvertical-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdownvertical:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdownvertical:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    .dropdownhorizontal-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdownhorizontal-content a {
+        color: black;
+        padding: 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdownhorizontal-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdownhorizontal:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdownhorizontal:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+
+    .dropdownboth-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+    }
+
+    .dropdownboth-content a {
+        color: black;
+        padding: 5px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdownboth-content a:hover {
+        background-color: #ddd;
+    }
+
+    .dropdownboth:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdownboth:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+    .SudokuDiv {
+        /* height: 600px;
+        width: 700px; */
+        display: inline-block;
+        border: 2px solid blue;
+    }
+    .bigtable {
+        /* border: 2px solid red; */
+        width: 500px;
+        height: 500px;
+    }
+</style>
+
+<html>
+    <head> </head>
+    <title>Group Sudoku</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script
+        src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+        type="text/javascript"
+    ></script>
+
+    <div>
+        <h1>Group Sudoku Login</h1>
+        <table border="0">
+            <tbody>
+                <tr>
+                    <form id="input">
+                        <td>Username:</td>
+                        <td align="left">
+                            <input
+                                id="username-input"
+                                type="text"
+                                size="25"
+                                name="uname"
+                            />
+
+                            <tr>
+                                <td>Room ID</td>
+                                <td align="left">
+                                    <input
+                                        id="roomid-input"
+                                        type="text"
+                                        size="25"
+                                        name="rid"
+                                    />
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <input type="submit" value="Join As Host" />
+                                    <input type="submit" value="Join As User" />
+                                </td>
+                            </tr>
+                        </td>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="SudokuDiv">
+        <tbody class="bigtable">
+            <!-- <table class="sudoku_row" id="names"></table> -->
+            <table class="sudoku_row" id="names0">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names1">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names2">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names3">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names4">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names5">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names6">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names7">
+                <tr></tr>
+            </table>
+            <table class="sudoku_row" id="names8">
+                <tr></tr>
+            </table>
+        </tbody>
+    </div>
+    <div>
+        <h2>Player List</h2>
+        <table style="width: 50%">
+            <tr>
+                <th>Username</th>
+                <th>Number of Mistakes</th>
+                <th>Number of Solutions</th>
+            </tr>
+            <tr>
+                <th>Walaa</th>
+                <th id="mistakes"></th>
+            </tr>
+        </table>
+    </div>
+    <script>
+        console.log("HERE");
+        var socket = io();
+        var username = document.getElementById("username-input");
+        var input = document.getElementById("input");
+        var roomid = document.getElementById("roomid-input");
+
+        //Create border
+        //2 11 20 29 38 47 65 74
+        //5 14 23 32 41 50 59 68
+
+        // 18 19 20 21 22 23 24 25 26
+        // 45 46 47 48 49 50 51 52 53
+        let verticalBorder = [
+            2, 11, 20, 29, 38, 47, 65, 74, 5, 14, 23, 32, 41, 50, 59, 68, 77,
+            56,
+        ];
+        let horizontalBorder = [
+            18, 19, 20, 21, 22, 23, 24, 25, 26, 45, 46, 47, 48, 49, 50, 51, 52,
+            53,
+        ];
+        let count = 0;
+        let i = 0;
+        let randomval = "";
+        input.onsubmit = function (e) {
+            socket.emit("testing", username.value, roomid.value);
+            e.preventDefault();
+        };
+        socket.on("getboard", (board) => {
+            console.log(board);
+            // board[55] = username.value;
+            $.each(board, function (key, val) {
+                if (i < 20) {
+                    if (val == null) {
+                        val = "-";
+                    }
+
+                    if (key % 9 == 0 && key != 0) {
+                        i++;
+                    }
+
+                    console.log(
+                        verticalBorder.indexOf(key),
+                        horizontalBorder.indexOf(key),
+                        verticalBorder[key],
+                        horizontalBorder[key]
+                    );
+                    if (
+                        horizontalBorder.indexOf(key) == -1 &&
+                        verticalBorder.indexOf(key) == -1
+                    ) {
+                        $(
+                            '<div class="dropdown"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else if (
+                        verticalBorder.indexOf(key) != -1 &&
+                        horizontalBorder.indexOf(key) == -1
+                    ) {
+                        $(
+                            '<div class="dropdownvertical"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else if (
+                        verticalBorder.indexOf(key) != -1 &&
+                        horizontalBorder.indexOf(key) != -1
+                    ) {
+                        $(
+                            '<div class="dropdownboth"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    } else {
+                        $(
+                            '<div class="dropdownhorizontal"><button class="dropbtn"><p id="updatecell' +
+                                key +
+                                '"></p></button><div class="dropdown-content"><a onclick="updatecell(' +
+                                key +
+                                ')">-</a><a onclick="updatecell1(' +
+                                key +
+                                ')">1</a><a onclick="updatecell2(' +
+                                key +
+                                ')">2</a><a onclick="updatecell3(' +
+                                key +
+                                ')">3</a><a onclick="updatecell4(' +
+                                key +
+                                ')">4</a><a onclick="updatecell5(' +
+                                key +
+                                ')">5</a><a onclick="updatecell6(' +
+                                key +
+                                ')">6</a><a onclick="updatecell7(' +
+                                key +
+                                ')">7</a><a onclick="updatecell8(' +
+                                key +
+                                ')">8</a><a onclick="updatecell9(' +
+                                key +
+                                ')">9</a></div>'
+                        ).appendTo("#names" + i);
+                    }
+                }
+
+                document.getElementById("updatecell" + key).innerHTML = val;
+                socket.emit("updateBoard", board);
+            });
+        });
+        socket.on("mistake", (key, mistakescount) => {
+            count++;
+            document.getElementById("updatecell" + key).style.color = "red";
+            document.getElementById("mistakes").innerHTML = mistakescount;
+        });
+        socket.on("correct", (key) => {
+            document.getElementById("updatecell" + key).style.color = "white";
+        });
+
+        function updatecell(key, val) {
+            randomval = "-";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "-";
+        }
+
+        function updatecell1(key, val) {
+            randomval = "1";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "1";
+        }
+
+        function updatecell2(key, val) {
+            randomval = "2";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "2";
+        }
+
+        function updatecell3(key, val) {
+            randomval = "3";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "3";
+        }
+
+        function updatecell4(key, val) {
+            randomval = "4";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "4";
+        }
+
+        function updatecell5(key, val) {
+            randomval = "5";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "5";
+        }
+
+        function updatecell6(key, val) {
+            randomval = "6";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "6";
+        }
+
+        function updatecell7(key, val) {
+            randomval = "7";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "7";
+        }
+
+        function updatecell8(key, val) {
+            randomval = "8";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "8";
+        }
+
+        function updatecell9(key, val) {
+            randomval = "9";
+            socket.emit("updatesudoku", randomval, key);
+            document.getElementById("updatecell" + key).innerHTML = "9";
+        }
+    </script>
+</html>
